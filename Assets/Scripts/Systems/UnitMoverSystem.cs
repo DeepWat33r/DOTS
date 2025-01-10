@@ -2,7 +2,10 @@ using Authoring;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
+using UnityEngine;
+using static MonoBehaviours.MouseWorldPosition;
 
 namespace Systems
 {
@@ -13,12 +16,24 @@ namespace Systems
         {
             foreach ((
                          RefRW<LocalTransform> localTransform,
-                         RefRO<MoveSpeed> moveSpeed)
+                         RefRO<MoveSpeed> moveSpeed,
+                         RefRW<PhysicsVelocity> physicsVelocity)
                      in (SystemAPI.Query<
                          RefRW<LocalTransform>,
-                         RefRO<MoveSpeed>>()))
+                         RefRO<MoveSpeed>,
+                         RefRW<PhysicsVelocity>>()))
             {
-                localTransform.ValueRW.Position = localTransform.ValueRO.Position + new float3(moveSpeed.ValueRO.value , 0 , 0) * SystemAPI.Time.DeltaTime;
+                float3 targetPosition = Instance.GetMouseWorldPosition();
+                float3 direction = math.normalize(targetPosition - localTransform.ValueRO.Position);
+
+                float rotationSpeed = 10f;
+                localTransform.ValueRW.Rotation = math.slerp(localTransform.ValueRO.Rotation,
+                    quaternion.LookRotation(direction, math.up()), SystemAPI.Time.DeltaTime * rotationSpeed);
+
+                physicsVelocity.ValueRW.Linear = direction * moveSpeed.ValueRO.value;
+                physicsVelocity.ValueRW.Angular = float3.zero;
+                
+                
             }
 
         }
