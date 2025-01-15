@@ -42,11 +42,10 @@ namespace Systems
 
 
             }*/
-
         }
         
     }
-
+    [BurstCompile]
     public partial struct UnitMoverJob : IJobEntity
     {
         public float deltaTime;
