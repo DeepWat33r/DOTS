@@ -5,6 +5,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
+using Unity.VisualScripting;
 using UnityEngine;
 using static MonoBehaviours.MouseWorldPosition;
 
@@ -20,28 +21,7 @@ namespace Systems
                 deltaTime = SystemAPI.Time.DeltaTime,
             };
             unitMoverJob.ScheduleParallel();
-
-            /*foreach ((
-                         RefRW<LocalTransform> localTransform,
-                         RefRO<UnitMover> unitMover,
-                         RefRW<PhysicsVelocity> physicsVelocity)
-                     in (SystemAPI.Query<
-                         RefRW<LocalTransform>,
-                         RefRO<UnitMover>,
-                         RefRW<PhysicsVelocity>>()))
-            {
-                float3 direction = math.normalize(unitMover.ValueRO.targetPosition - localTransform.ValueRO.Position);
-
-                localTransform.ValueRW.Rotation = math.slerp(
-                    localTransform.ValueRO.Rotation,
-                    quaternion.LookRotation(direction, math.up()),
-                    SystemAPI.Time.DeltaTime * unitMover.ValueRO.rotationSpeed);
-
-                physicsVelocity.ValueRW.Linear = direction * unitMover.ValueRO.moveSpeed;
-                physicsVelocity.ValueRW.Angular = float3.zero;
-
-
-            }*/
+            
         }
         
     }
@@ -51,8 +31,18 @@ namespace Systems
         public float deltaTime;
         public void Execute(ref LocalTransform localTransform, in UnitMover unitMover, ref PhysicsVelocity physicsVelocity)
         {
-            float3 direction = math.normalize(unitMover.targetPosition - localTransform.Position);
-                
+            float3 direction = unitMover.targetPosition - localTransform.Position;
+            
+            float targetDistance = 2f;
+            if (math.lengthsq(direction) < targetDistance)
+            {
+                physicsVelocity.Linear = float3.zero;
+                physicsVelocity.Angular = float3.zero;
+                return;
+            }
+            
+            direction = math.normalize(direction);
+            
             localTransform.Rotation = math.slerp(
                 localTransform.Rotation,
                 quaternion.LookRotation(direction, math.up()),
