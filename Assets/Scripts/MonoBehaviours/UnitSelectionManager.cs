@@ -15,17 +15,15 @@ namespace MonoBehaviours
                 
                 EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
                 EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).
-                    WithAll<UnitMover>().
+                    WithAll<UnitMover, Selected>().
                     Build(entityManager);
                 
-                NativeArray<Entity> entities = entityQuery.ToEntityArray(Allocator.Temp);
                 NativeArray<UnitMover> unitMoverArray = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
                 for (int i = 0; i < unitMoverArray.Length; i++)
                 {
                     UnitMover unitMover = unitMoverArray[i];
                     unitMover.targetPosition = mouseWorldPosition;
                     unitMoverArray[i] = unitMover;
-                    //entityManager.SetComponentData(entities[i], unitMover);
                 }
                 entityQuery.CopyFromComponentDataArray(unitMoverArray);
             }
