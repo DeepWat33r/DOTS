@@ -3,6 +3,7 @@ using System.Numerics;
 using Authoring;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -33,6 +34,35 @@ namespace MonoBehaviours
             if (Input.GetMouseButtonUp(0))
             {
                 var selectionEndMousePosition = Input.mousePosition;
+                
+                EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+                EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).
+                    WithAll<Selected>().
+                    Build(entityManager);
+                NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);
+                for (int i = 0; i < entityArray.Length; i++)
+                {
+                    entityManager.SetComponentEnabled<Selected>(entityArray[i], false);
+                }
+                
+                entityQuery = new EntityQueryBuilder(Allocator.Temp).
+                    WithAll<LocalTransform, Unit>().
+                    WithPresent<Selected>().
+                    Build(entityManager);
+                
+                Rect selectionAreaRect = GetSelectionAreaRect();
+                
+                entityArray = entityQuery.ToEntityArray(Allocator.Temp);
+                NativeArray<LocalTransform> localTransformArray = entityQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
+                for (int i = 0; i < localTransformArray.Length; i++)
+                {
+                    LocalTransform unitLocalTransform = localTransformArray[i];
+                    Vector2 unitScreenPosition = Camera.main!.WorldToScreenPoint(unitLocalTransform.Position);
+                    if (selectionAreaRect.Contains(unitScreenPosition))
+                    {
+                        entityManager.SetComponentEnabled<Selected>(entityArray[i], true);
+                    }
+                }
                 OnSelectionAreaEnd?.Invoke(this, EventArgs.Empty);
             }
             if (Input.GetMouseButtonDown(1))
