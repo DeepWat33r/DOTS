@@ -1,14 +1,40 @@
+using System;
+using System.Numerics;
 using Authoring;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace MonoBehaviours
 {
     public class UnitSelectionManager : MonoBehaviour
     {
+        public static UnitSelectionManager Instance{get; private set;}
+        public event EventHandler OnSelectionAreaStart;
+        public event EventHandler OnSelectionAreaEnd;
+        
+        private Vector2 _selectionStartMousePosition;
+        
+        public void Awake()
+        {
+            Instance = this;
+        }
+
         private void Update()
         {
+            if (Input.GetMouseButtonDown(0))
+            {
+                _selectionStartMousePosition = Input.mousePosition;
+                OnSelectionAreaStart?.Invoke(this, EventArgs.Empty);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                var selectionEndMousePosition = Input.mousePosition;
+                OnSelectionAreaEnd?.Invoke(this, EventArgs.Empty);
+            }
             if (Input.GetMouseButtonDown(1))
             {
                 Vector3 mouseWorldPosition = MouseWorldPosition.Instance.GetMouseWorldPosition();
@@ -27,6 +53,20 @@ namespace MonoBehaviours
                 }
                 entityQuery.CopyFromComponentDataArray(unitMoverArray);
             }
+        }
+
+        public Rect GetSelectionAreaRect()
+        {
+            Vector2 selectionEndMousePosition = Input.mousePosition;
+            
+            Vector2 lowerLeftCorner = new Vector2(
+                Mathf.Min(_selectionStartMousePosition.x, selectionEndMousePosition.x),
+                Mathf.Min(_selectionStartMousePosition.y, selectionEndMousePosition.y)); 
+            Vector2 upperLeftCorner = new Vector2(
+                Mathf.Max(_selectionStartMousePosition.x, selectionEndMousePosition.x),
+                Mathf.Max(_selectionStartMousePosition.y, selectionEndMousePosition.y)); 
+            
+            return new Rect(lowerLeftCorner.x,lowerLeftCorner.y,upperLeftCorner.x - lowerLeftCorner.x, upperLeftCorner.y - lowerLeftCorner.y);
         }
     }
 }
