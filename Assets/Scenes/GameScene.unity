@@ -929,6 +929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionArea: {fileID: 1894089864}
+  canvas: {fileID: 1506146342}
 --- !u!1 &2071483821
 GameObject:
   m_ObjectHideFlags: 0

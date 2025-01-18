@@ -7,7 +7,7 @@ namespace UI
     public class UnitSelectionManagerUI : MonoBehaviour
     {
         [SerializeField] private RectTransform selectionArea;
-
+        [SerializeField] private Canvas canvas;
         private void Start()
         {
             UnitSelectionManager.Instance.OnSelectionAreaStart += OnSelectionAreaStart;
@@ -38,8 +38,9 @@ namespace UI
         {
             Rect selectionAreaRect = UnitSelectionManager.Instance.GetSelectionAreaRect();
 
-            selectionArea.anchoredPosition = new Vector2(selectionAreaRect.x, selectionAreaRect.y);
-            selectionArea.sizeDelta = new Vector2(selectionAreaRect.width, selectionAreaRect.height);
+            float canvasScale = canvas.transform.localScale.x;
+            selectionArea.anchoredPosition = new Vector2(selectionAreaRect.x, selectionAreaRect.y)/canvasScale;
+            selectionArea.sizeDelta = new Vector2(selectionAreaRect.width, selectionAreaRect.height)/canvasScale;
         }
     }
 }
