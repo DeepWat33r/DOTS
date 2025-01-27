@@ -29,7 +29,8 @@ namespace Systems
     public partial struct UnitMoverJob : IJobEntity
     {
         public float deltaTime;
-        public void Execute(ref LocalTransform localTransform, in UnitMover unitMover, ref PhysicsVelocity physicsVelocity)
+
+        private void Execute(ref LocalTransform localTransform, in UnitMover unitMover, ref PhysicsVelocity physicsVelocity)
         {
             float3 direction = unitMover.targetPosition - localTransform.Position;
             
