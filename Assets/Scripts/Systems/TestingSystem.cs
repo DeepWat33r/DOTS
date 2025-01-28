@@ -7,27 +7,20 @@ using UnityEngine;
 
 namespace Systems
 {
-    partial struct TestingSystem : ISystem
+    /*partial struct TestingSystem : ISystem
     {
-        /*[BurstCompile]
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             int unitCount = 0;
-            foreach (var (
-                         localTransform,
-                         unitMover,
-                         physicsVelocity, 
-                         selected)
+            foreach (var friendly
                      in SystemAPI.Query<
-                         RefRW<LocalTransform>,
-                         RefRO<UnitMover>,
-                         RefRW<PhysicsVelocity>,
-                         RefRO<Selected>>())
+                         RefRW<Friendly>>())
             {
                 unitCount++;
             }
 
             Debug.Log("Unit count: " + unitCount);
-        }*/
-    }
+        }
+    }*/
 }
