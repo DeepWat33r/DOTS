@@ -28,6 +28,9 @@ namespace Authoring
     {
         public Entity visualEntity;
         public float showScale;
+
+        public bool onSelected;
+        public bool onDeselected;
     }
 }
 
