@@ -34,7 +34,6 @@ namespace Systems
                     continue;
                 findTarget.ValueRW.timer = findTarget.ValueRO.timerMax;
                 
-                Debug.Log("Finding Target");
                 distanceHitList.Clear();
                 CollisionFilter collisionFilter = new CollisionFilter()
                 {
