@@ -83,7 +83,6 @@ namespace MonoBehaviours
                     PhysicsWorldSingleton physicsWorldSingleton = entityQuery.GetSingleton<PhysicsWorldSingleton>();
                     CollisionWorld collisionWorld = physicsWorldSingleton.CollisionWorld;
                     UnityEngine.Ray cameraRay = Camera.main!.ScreenPointToRay(Input.mousePosition);
-                    int unitLayer = LayerMask.NameToLayer("Units");
                     RaycastInput raycastInput = new RaycastInput()
                     {
                         Start = cameraRay.GetPoint(0f),
@@ -91,7 +90,7 @@ namespace MonoBehaviours
                         Filter = new CollisionFilter()
                         {
                             BelongsTo = ~0u,
-                            CollidesWith = 1u << unitLayer,
+                            CollidesWith = 1u << GameAssets.UNIT_LAYER,
                             GroupIndex = 0
                         }
                     };

@@ -138,6 +138,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3693072784605272583, guid: 7551809be91ff264f9f9cf73a04a4d3d, type: 3}
+      propertyPath: range
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693072784605272583, guid: 7551809be91ff264f9f9cf73a04a4d3d, type: 3}
+      propertyPath: targetFaction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6748321508154160552, guid: 7551809be91ff264f9f9cf73a04a4d3d, type: 3}
       propertyPath: faction
       value: 0
