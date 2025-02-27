@@ -1,10 +1,11 @@
 using Authoring;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Transforms;
 
 namespace Systems
 {
-    [UpdateInGroup(typeof(LateSimulationSystemGroup))]
+    [UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)]
     partial struct ResetTargetSystem : ISystem
     {
 
@@ -16,8 +17,10 @@ namespace Systems
                      in SystemAPI.Query<
                          RefRW<Target>>())
             {
-                if (!SystemAPI.Exists(target.ValueRO.targetEntity))
-                    target.ValueRW.targetEntity = Entity.Null;
+                if (target.ValueRO.targetEntity != Entity.Null)
+                    if (!SystemAPI.Exists(target.ValueRO.targetEntity) || !SystemAPI.HasComponent<LocalTransform>(target.ValueRO.targetEntity))
+                        target.ValueRW.targetEntity = Entity.Null;
+                
             }
         }
 

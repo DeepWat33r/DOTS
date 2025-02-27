@@ -29,6 +29,11 @@ namespace Systems
                          RefRO<Bullet>,
                          RefRO<Target>>().WithEntityAccess())
             {
+                if (target.ValueRO.targetEntity == Entity.Null)
+                {
+                    ecb.DestroyEntity(entity);
+                    continue;
+                }
                 LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.targetEntity);
                 
                 float distanceBeforeSq = math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position);
@@ -45,7 +50,7 @@ namespace Systems
                     localTransform.ValueRW.Position = targetLocalTransform.Position;
                 }
                 
-                float destroyDistance = .02f;
+                float destroyDistance = .002f;
                 if (math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position) < destroyDistance)
                 {
                     RefRW<Health> targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.targetEntity);
