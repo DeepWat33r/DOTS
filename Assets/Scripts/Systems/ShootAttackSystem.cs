@@ -13,6 +13,7 @@ namespace Systems
         {
             state.RequireForUpdate<EntitiesReference>();
         }
+        
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
