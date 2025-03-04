@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Authoring
@@ -7,6 +8,8 @@ namespace Authoring
     {
         public float timerMax;
         public int damageAmount;
+        public float attackDistance;
+        public Transform bulletSpawnPositionTransform;
 
         public class Baker : Baker<ShootAttackAuthoring>
         {
@@ -17,6 +20,8 @@ namespace Authoring
                 {
                     timerMax = authoring.timerMax,
                     damageAmount = authoring.damageAmount,
+                    attackDistance = authoring.attackDistance,
+                    bulletSpawnLocalPosition = authoring.bulletSpawnPositionTransform.localPosition,
                 });
             }
         }
@@ -27,5 +32,7 @@ namespace Authoring
         public float timer;
         public float timerMax;
         public int damageAmount;
+        public float attackDistance;
+        public float3 bulletSpawnLocalPosition;
     }
 }
