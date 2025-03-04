@@ -9,6 +9,11 @@ namespace Systems
 {
     partial struct ShootAttackSystem : ISystem
     {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<EntitiesReference>();
+        }
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
