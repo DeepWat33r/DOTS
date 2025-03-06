@@ -18,22 +18,22 @@ namespace Systems
             PhysicsWorldSingleton physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
             CollisionWorld collisionWorld = physicsWorldSingleton.CollisionWorld;
             NativeList<DistanceHit> distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
-            
-            
+
+
             foreach (var (
-                         localTransform, 
+                         localTransform,
                          findTarget,
-                         target) 
+                         target)
                      in SystemAPI.Query<
-                         RefRO<LocalTransform>, 
-                         RefRW<FindTarget>, 
+                         RefRO<LocalTransform>,
+                         RefRW<FindTarget>,
                          RefRW<Target>>())
             {
                 findTarget.ValueRW.timer -= SystemAPI.Time.DeltaTime;
                 if (findTarget.ValueRO.timer > 0f)
                     continue;
                 findTarget.ValueRW.timer = findTarget.ValueRO.timerMax;
-                
+
                 distanceHitList.Clear();
                 CollisionFilter collisionFilter = new CollisionFilter()
                 {
@@ -46,6 +46,8 @@ namespace Systems
                 {
                     foreach (var distanceHit in distanceHitList)
                     {
+                        if (!SystemAPI.Exists(distanceHit.Entity) || !SystemAPI.HasComponent<Unit>(distanceHit.Entity))
+                            continue;
                         Unit targetUnit = SystemAPI.GetComponent<Unit>(distanceHit.Entity);
                         if (targetUnit.faction == findTarget.ValueRO.targetFaction)
                         {
@@ -53,9 +55,8 @@ namespace Systems
                             break;
                         }
                     }
-                };
+                }
             }
         }
-    
     }
 }

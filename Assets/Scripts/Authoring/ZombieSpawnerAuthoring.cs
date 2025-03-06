@@ -6,6 +6,8 @@ namespace Authoring
     public class ZombieSpawnerAuthoring : MonoBehaviour
     {
         public float timerMax;
+        public float randomWalkingDistanceMin;
+        public float randomWalkingDistanceMax;
         public class Baker : Baker<ZombieSpawnerAuthoring>
         {
             public override void Bake(ZombieSpawnerAuthoring authoring)
@@ -14,6 +16,8 @@ namespace Authoring
                 AddComponent(entity, new ZombieSpawner
                 {
                     timerMax = authoring.timerMax,
+                    randomWalkingDistanceMin = authoring.randomWalkingDistanceMin,
+                    randomWalkingDistanceMax = authoring.randomWalkingDistanceMax
                 });
             }
         }
@@ -22,6 +26,7 @@ namespace Authoring
     {
         public float timer;
         public float timerMax;
-        
+        public float randomWalkingDistanceMin;
+        public float randomWalkingDistanceMax;
     }
 }

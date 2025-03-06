@@ -13,6 +13,7 @@ namespace Systems
 {
     partial struct UnitMoverSystem : ISystem
     {
+        public const float ReachedTargetPositionDistanceSq = 2f;
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -34,8 +35,8 @@ namespace Systems
         {
             float3 direction = unitMover.targetPosition - localTransform.Position;
             
-            float targetDistance = 2f;
-            if (math.lengthsq(direction) < targetDistance)
+            float targetDistance = UnitMoverSystem.ReachedTargetPositionDistanceSq;
+            if (math.lengthsq(direction) <= targetDistance)
             {
                 physicsVelocity.Linear = float3.zero;
                 physicsVelocity.Angular = float3.zero;
