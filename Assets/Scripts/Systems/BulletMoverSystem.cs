@@ -58,6 +58,7 @@ namespace Systems
                 {
                     RefRW<Health> targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.targetEntity);
                     targetHealth.ValueRW.healthAmount -= bullet.ValueRO.damageAmount;
+                    targetHealth.ValueRW.onHealthChanged = true;
                 
                     ecb.DestroyEntity(entity);
                 }

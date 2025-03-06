@@ -6,6 +6,7 @@ namespace Authoring
     class HealthAuthoring : MonoBehaviour
     {
         public int healthAmount;
+        public int healthAmountMax;
     }
 
     class HealthAuthoringBaker : Baker<HealthAuthoring>
@@ -15,7 +16,9 @@ namespace Authoring
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new Health()
             {
-                healthAmount = authoring.healthAmount
+                healthAmount = authoring.healthAmount,
+                healthAmountMax = authoring.healthAmountMax,
+                onHealthChanged = true,
             });
         }
     }
@@ -23,4 +26,6 @@ namespace Authoring
 public struct Health : IComponentData
 {
     public int healthAmount;
+    public int healthAmountMax;
+    public bool onHealthChanged;
 }

@@ -15,6 +15,11 @@ namespace Systems
                 selected.ValueRW.onSelected = false;
                 selected.ValueRW.onDeselected = false;
             }
+
+            foreach (var health in SystemAPI.Query<RefRW<Health>>())
+            {
+                health.ValueRW.onHealthChanged = false;
+            }
         }
     
     }
