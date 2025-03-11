@@ -34,11 +34,12 @@ namespace Systems
                 
                 Health health = SystemAPI.GetComponent<Health>(healthBar.ValueRO.healthEntity);
 
-                if (!health.onHealthChanged)
+                if (health.onHealthChanged)
                 {
                     continue;
                 }
-                float healthNormalized = health.healthAmount / (float)health.healthAmountMax;
+                
+                float healthNormalized = (float)health.healthAmount / health.healthAmountMax;
 
                 if(Mathf.Approximately(healthNormalized, 1f))
                 {

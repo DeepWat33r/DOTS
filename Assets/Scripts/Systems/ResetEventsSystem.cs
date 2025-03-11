@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace Systems
 {
-    [UpdateInGroup(typeof(LateSimulationSystemGroup))]
+    [UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
     partial struct ResetEventsSystem : ISystem
     {
         [BurstCompile]

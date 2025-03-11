@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 131854712067942759}
   - component: {fileID: 7954673892511244328}
   m_Layer: 6
-  m_Name: HelthBar
+  m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
